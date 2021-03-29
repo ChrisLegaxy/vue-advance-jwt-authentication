@@ -12,7 +12,7 @@
             <div class="d-flex align-center">
               <v-btn color="orange" class="my-3" large>Login</v-btn>
               <v-spacer />
-              <a style="color: orange">Don't have an account?</a>
+              <a style="color: orange" @click="$router.push('/register')">Don't have an account?</a>
             </div>
           </v-form>
         </div>
