@@ -1,16 +1,34 @@
 <script lang="ts">
+/**
+ * * Packages Imports
+ */
 import Vue from 'vue';
 
+/**
+ * * Local Imports
+ */
 import { login } from '@/api/auth';
 import { setAccessToken } from '@/utils/auth';
 
+/**
+ * * Interfaces
+ */
+import { LoginBodyDto } from '@/interfaces/IAuth';
+
+interface Data {
+  createUserForm: LoginBodyDto,
+}
+
 export default Vue.extend({
+  name: 'LoginView',
+
   data: () => ({
     createUserForm: {
       username: '',
       password: '',
     },
-  }),
+  } as Data),
+
   methods: {
     async submitLoginForm() {
       const user = await login(this.createUserForm);
@@ -22,6 +40,7 @@ export default Vue.extend({
   },
 });
 </script>
+
 <template>
   <main id="login">
     <v-container style="height: 100%">
