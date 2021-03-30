@@ -1,7 +1,8 @@
 <script lang="ts">
-import { setAccessToken } from '@/utils/auth';
 import Vue from 'vue';
+
 import { login } from '@/api/auth';
+import { setAccessToken } from '@/utils/auth';
 
 export default Vue.extend({
   data: () => ({
