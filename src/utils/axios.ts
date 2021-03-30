@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       /**
        * * Handle only authentication errors
        */
-      if (status === 401) {
+      if ((status === 401) && (router.currentRoute.path !== '/login' || '/register')) {
         /**
         * * Cases that need to be met in order to refresh token
         * the will most likely be handle by custom error codes and definitions
