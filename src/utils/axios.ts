@@ -33,35 +33,41 @@ axiosInstance.interceptors.response.use(
       }: AxiosError = error;
 
       /**
-       * * Cases that need to be met in order to refresh token
-       * the will most likely be handle by custom error codes and definitions
+       * * Handle only authentication errors
        */
-      const caseJwtExpired: boolean = (status === 401) && (data.message === 'jwt expired');
-      const caseMissingAccessToken: boolean = (originalRequestConfig.url !== '/auth/refresh_token') && (getAccessToken() === null);
+      if (status === 401) {
+        /**
+        * * Cases that need to be met in order to refresh token
+        * the will most likely be handle by custom error codes and definitions
+        */
+        const caseJwtExpired: boolean = (data.message === 'jwt expired');
+        const caseMissingAccessToken: boolean = (originalRequestConfig.url !== '/auth/refresh_token') && (getAccessToken() === null);
 
-      if (caseJwtExpired || caseMissingAccessToken) {
-        console.info('Refreshing token....... 🚀');
+        if (caseJwtExpired || caseMissingAccessToken) {
+          console.info('Refreshing token....... 🚀');
 
-        const user = await refreshToken();
+          const user = await refreshToken();
 
-        console.info('%cRefreshing token success 🔑', 'color: green');
+          console.info('%cRefreshing token success 🔑', 'color: green');
 
-        setAccessToken(user.accessToken);
+          setAccessToken(user.accessToken);
 
-        originalRequestConfig.headers.Authorization = `Bearer ${getAccessToken()}`;
+          originalRequestConfig.headers.Authorization = `Bearer ${getAccessToken()}`;
 
-        console.info('%cRefetching data....... 📘', 'color: yellow');
+          console.info('%cRefetching data....... 📘', 'color: yellow');
 
-        const retryOriginalRequest = await axios(originalRequestConfig);
+          const retryOriginalRequest = await axios(originalRequestConfig);
 
-        return retryOriginalRequest;
+          return retryOriginalRequest;
+        }
+
+        removeAccessToken();
+        router.push('/login');
+
+        console.error('Refresing token failed');
+        console.warn('Please login again');
       }
-
-      removeAccessToken();
-      router.push('/login');
-
-      console.error('Refresing token failed');
-      console.warn('Please login again');
+      console.error(error.response);
 
       return Promise.reject(error);
     }
