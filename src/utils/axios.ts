@@ -34,6 +34,7 @@ axiosInstance.interceptors.response.use(
 
       /**
        * * Cases that need to be met in order to refresh token
+       * the will most likely be handle by custom error codes and definitions
        */
       const caseJwtExpired: boolean = (status === 401) && (data.message === 'jwt expired');
       const caseMissingAccessToken: boolean = (originalRequestConfig.url !== '/auth/refresh_token') && (getAccessToken() === null);
