@@ -39,17 +39,17 @@ axiosInstance.interceptors.response.use(
       const caseMissingAccessToken: boolean = (originalRequestConfig.url !== '/auth/refresh_token') && (getAccessToken() === null);
 
       if (caseJwtExpired || caseMissingAccessToken) {
-        console.info('Refresing token.......');
+        console.info('Refreshing token....... 🚀');
 
         const user = await refreshToken();
 
-        console.info('Refreshing token success');
+        console.info('%cRefreshing token success 🔑', 'color: green');
 
         setAccessToken(user.accessToken);
 
         originalRequestConfig.headers.Authorization = `Bearer ${getAccessToken()}`;
 
-        console.info('Refetching data.......');
+        console.info('%cRefetching data....... 📘', 'color: yellow');
 
         const retryOriginalRequest = await axios(originalRequestConfig);
 
@@ -59,7 +59,7 @@ axiosInstance.interceptors.response.use(
       removeAccessToken();
       router.push('/login');
 
-      console.info('Refresing token failed');
+      console.error('Refresing token failed');
       console.warn('Please login again');
 
       return Promise.reject(error);
