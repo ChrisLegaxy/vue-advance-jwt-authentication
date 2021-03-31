@@ -1,8 +1,9 @@
 import { AuthResponseDto, LoginBodyDto, RegisterBodyDto } from '@/interfaces/IAuth';
 import { UserResponseDto } from '@/interfaces/IUser';
-// import router from '@/router';
-// eslint-disable-next-line import/no-cycle
+
+/* eslint-disable-next-line import/no-cycle */
 import axios from '@/utils/axios';
+import { AxiosResponse } from 'axios';
 
 export const login = async (loginBodyDto: LoginBodyDto): Promise<AuthResponseDto> => {
   const response = await axios({
@@ -59,4 +60,15 @@ export const refreshToken = async (): Promise<AuthResponseDto> => {
 
     return Promise.reject(error);
   }
+};
+
+export const logout = async (): Promise<AxiosResponse> => {
+  const response = await axios({
+    url: '/auth/logout',
+    method: 'GET',
+    // needs to set credential true here, else it won't know it's the right cookie to clear
+    withCredentials: true,
+  });
+
+  return response;
 };
