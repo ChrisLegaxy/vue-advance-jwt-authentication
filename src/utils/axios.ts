@@ -35,13 +35,13 @@ axiosInstance.interceptors.response.use(
       /**
        * * Handle only authentication errors
        */
-      if ((status === 401) && (router.currentRoute.path !== '/login' || '/register')) {
+      if (status === 401 && !(router.currentRoute.path === '/login')) {
         /**
-        * * Cases that need to be met in order to refresh token
-        * the will most likely be handle by custom error codes and definitions
-        */
-        const caseJwtExpired: boolean = (data.message === 'jwt expired');
-        const caseMissingAccessToken: boolean = (originalRequestConfig.url !== '/auth/refresh_token') && (getAccessToken() === null);
+         * * Cases that need to be met in order to refresh token
+         * the will most likely be handle by custom error codes and definitions
+         */
+        const caseJwtExpired: boolean = data.message === 'jwt expired';
+        const caseMissingAccessToken: boolean = originalRequestConfig.url !== '/auth/refresh_token' && getAccessToken() === null;
 
         if (caseJwtExpired || caseMissingAccessToken) {
           console.info('Refreshing token....... 🚀');
