@@ -6,7 +6,7 @@ import router from '@/router';
 import { getAccessToken, removeAccessToken, setAccessToken } from '@/utils/auth';
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000,
 });
 
